@@ -115,13 +115,15 @@
             padding: 15px 25px;
             position: sticky;
             top: 20px;
-            margin: 0 20px 20px 20px;
+            /* 修改 1: 增加 margin-bottom 拉開與下方卡片的距離 */
+            margin: 0 20px 40px 20px;
             z-index: 100;
             border-radius: 50px; /* 膠囊狀 */
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .location-pill {
+        /* 共用 Pill 樣式 (地點與日期) */
+        .location-pill, .update-pill {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             padding: 8px 20px;
@@ -131,19 +133,11 @@
             letter-spacing: 1px;
             border: 1px solid var(--glass-border);
             box-shadow: none;
-            transform: none;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .update-pill {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            background: transparent;
-            font-weight: 500;
-            padding: 0;
+            backdrop-filter: blur(4px);
         }
 
         .container {
@@ -282,7 +276,7 @@
         .section-title {
             font-size: 1.1rem;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced from 20px to account for container padding */
             margin-left: 5px;
             font-weight: 300;
             letter-spacing: 1px;
@@ -307,6 +301,8 @@
             display: flex;
             overflow-x: auto;
             gap: 15px;
+            /* Added padding-top to prevent hover clipping */
+            padding-top: 20px; 
             padding-bottom: 20px;
             scrollbar-width: none;
             padding-left: 5px; 
@@ -325,9 +321,18 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             flex-shrink: 0;
-            transition: transform 0.3s;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 優化過渡效果 */
+            cursor: pointer;
         }
         
+        /* 修改 3: 加入 Hover 微互動效果 */
+        .mini-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
         .mini-card:active {
             transform: scale(0.95);
         }
@@ -542,7 +547,8 @@
             const dayIndex = now.getDay();
             const days = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
 
-            document.getElementById('updateTime').textContent = `${month}月${date}日 ${days[dayIndex]}`;
+            // 修改 4: 加入日曆圖示
+            document.getElementById('updateTime').innerHTML = `📅 ${month}月${date}日 ${days[dayIndex]}`;
         }
 
         async function fetchWeather() {
